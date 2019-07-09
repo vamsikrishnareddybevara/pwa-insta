@@ -1,12 +1,24 @@
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/sw.js").then(function() {
-        console.log("Serviceworker is registered");
+
+var deferredPrompt;
+
+if (!window.Promise) {
+  window.Promise = Promise;
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('/sw.js')
+    .then(function () {
+      console.log('Service worker registered!');
+    })
+    .catch(function(err) {
+      console.log(err);
     });
 }
-let deferred;
-window.addEventListener("beforeinstallprompt", function (event) {
-	console.log("App install banner deferred");
-	event.preventDefault();
-	deferred = event;
-	return false;
+
+window.addEventListener('beforeinstallprompt', function(event) {
+  console.log('beforeinstallprompt fired');
+  event.preventDefault();
+  deferredPrompt = event;
+  return false;
 });
